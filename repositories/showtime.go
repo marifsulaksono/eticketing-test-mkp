@@ -13,8 +13,8 @@ type showtimeRepository struct {
 
 type ShowtimeRepository interface {
 	InsertNewShowtime(ctx context.Context, showtime entities.Showtime) error
-	GetAllShowtimes(ctx context.Context) ([]entities.Showtime, error)
-	GetShowtimeById(ctx context.Context, id int) (entities.Showtime, error)
+	GetAllShowtimes(ctx context.Context) ([]entities.ShowtimeResponse, error)
+	GetShowtimeById(ctx context.Context, id int) (entities.ShowtimeResponse, error)
 	UpdateShowtime(ctx context.Context, id int, showtime entities.Showtime) error
 	DeleteShowtime(ctx context.Context, id int) error
 }
@@ -27,14 +27,14 @@ func (st *showtimeRepository) InsertNewShowtime(ctx context.Context, showtime en
 	return st.DB.Create(&showtime).Error
 }
 
-func (st *showtimeRepository) GetAllShowtimes(ctx context.Context) ([]entities.Showtime, error) {
-	var showtimes []entities.Showtime
+func (st *showtimeRepository) GetAllShowtimes(ctx context.Context) ([]entities.ShowtimeResponse, error) {
+	var showtimes []entities.ShowtimeResponse
 	err := st.DB.Preload("Branch").Preload("Stage").Preload("Movie").Find(&showtimes).Error
 	return showtimes, err
 }
 
-func (st *showtimeRepository) GetShowtimeById(ctx context.Context, id int) (entities.Showtime, error) {
-	var showtime entities.Showtime
+func (st *showtimeRepository) GetShowtimeById(ctx context.Context, id int) (entities.ShowtimeResponse, error) {
+	var showtime entities.ShowtimeResponse
 	err := st.DB.Where("id = ?", id).Preload("Branch").Preload("Stage").Preload("Movie").First(&showtime).Error
 	return showtime, err
 }

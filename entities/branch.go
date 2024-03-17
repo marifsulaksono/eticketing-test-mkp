@@ -6,3 +6,7 @@ type Branch struct {
 	Address     string `json:"address"`
 	Phonenumber string `json:"phonenumber"`
 }
+
+func (Branch) TableName() string {
+	return "branchs"
+}
